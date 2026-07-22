@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KKUCampusLife </title>
+    <title>KKUCampusLife - ศูนย์กลางชีวิตนักศึกษา มข.</title>
+
     <style>
         /* CSS การตกแต่งหน้าตาแอป */
         * {
@@ -27,6 +28,116 @@
             min-height: 100vh;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             position: relative;
+        }
+
+        /* ----- 🔒 สไตล์หน้า LOGIN (สไตล์ มข.) ----- */
+        #login-page {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .kku-header {
+            margin-bottom: 25px;
+        }
+
+        .kku-header h2 {
+            color: #a73b24;
+            font-size: 1.4rem;
+            margin-top: 10px;
+        }
+
+        .kku-header p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .login-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .btn-kku-login {
+            width: 100%;
+            padding: 11px;
+            background-color: #722718;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-kku-login:hover {
+            background-color: #581d11;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .btn-sso {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-sso:hover {
+            background-color: #0056b3;
+        }
+
+        /* ----- 🏠 สไตล์หน้าแอปหลัก (ซ่อนไว้ก่อนจนกว่าจะล็อกอิน) ----- */
+        #main-app {
+            display: none;
             padding-bottom: 70px;
         }
 
@@ -41,14 +152,28 @@
         }
 
         header h1 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
-        .badge-sso {
-            background-color: #27ae60;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 12px;
+        .btn-logout {
+            background-color: #ffffff;
+            color: #a73b24;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: auto;
+            margin-bottom: 0;
+        }
+
+        .user-banner {
+            padding: 10px 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #c8e6c9;
         }
 
         /* Nav Tabs */
@@ -67,6 +192,8 @@
             color: #666;
             cursor: pointer;
             border-bottom: 3px solid transparent;
+            margin-bottom: 0;
+            width: auto;
         }
 
         .tab-btn.active {
@@ -114,6 +241,7 @@
             border: none;
             font-weight: bold;
             cursor: pointer;
+            margin-bottom: 0;
         }
 
         .btn-primary:hover {
@@ -162,6 +290,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.85rem;
+            margin-bottom: 0;
         }
 
         .btn-join:disabled {
@@ -193,102 +322,173 @@
 <body>
 
 <div class="app-container">
-    <!-- Header -->
-    <header>
-        <h1>KKUCampusLife</h1>
-        <span class="badge-sso">✓ KKU Mail Verified</span>
-    </header>
 
-    <!-- Navigation Tabs -->
-    <div class="category-tabs">
-        <button class="tab-btn active" onclick="switchTab('sports')">⚽ กีฬา/กิจกรรม</button>
-        <button class="tab-btn" onclick="switchTab('study')">📚 ติว/เรียน</button>
-        <button class="tab-btn" onclick="switchTab('lost')">🔍 ของหาย</button>
-    </div>
-
-    <!-- ⚽ หมวดกีฬา/กิจกรรม -->
-    <div id="sports" class="content-section active">
-        <!-- ฟอร์มสร้างโพสต์ -->
-        <div class="create-card">
-            <h3>➕ สร้างแมตช์/หากิจกรรม</h3>
-            <input type="text" id="sportTitle" placeholder="หัวข้อ (เช่น เตะบอลสนามหญ้าเทียม)">
-            <input type="datetime-local" id="sportTime">
-            <input type="number" id="sportSlots" placeholder="จำนวนคนที่ขาด (เช่น 3)">
-            <button class="btn-primary" onclick="addSportEvent()">ลงประกาศหาเพื่อน</button>
+    <!-- 🔒 1. หน้า LOGIN -->
+    <div id="login-page">
+        <div class="kku-header">
+            <h2>มหาวิทยาลัยขอนแก่น</h2>
+            <p>KHON KAEN UNIVERSITY</p>
         </div>
 
-        <!-- รายการโพสต์ -->
-        <div id="sportsList">
-            <!-- โพสต์ตัวอย่าง -->
-            <div class="event-card">
-                <div class="event-title">เตะบอลฟุตซอลสนามกลาง มข.</div>
-                <div class="event-meta">📍 สนามกลาง | 🕒 ค่ำนี้ 18:30 น.</div>
-                <span class="event-status status-open">ขาดอีก 2 คน</span>
-                <button class="btn-join" onclick="joinEvent(this, 2)">กดเข้าร่วม (Join)</button>
+        <div class="login-box">
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Username / KKU Mail</label>
+                    <input type="text" id="userInput" placeholder="เช่น somchai@kkumail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="passInput" placeholder="รหัสผ่าน" required>
+                </div>
+                <button type="submit" class="btn-kku-login">เข้าสู่ระบบ</button>
+            </form>
+
+            <div class="divider"><span>-- OR --</span></div>
+
+            <button type="button" class="btn-sso" onclick="handleSSOLogin()">
+                ✉️ KKU Email Login
+            </button>
+        </div>
+    </div>
+
+    <!-- 🏠 2. หน้าแอปหลัก KKUCampusLife -->
+    <div id="main-app">
+        <!-- Header -->
+        <header>
+            <h1>KKUCampusLife</h1>
+            <button class="btn-logout" onclick="handleLogout()">ออกจากระบบ</button>
+        </header>
+
+        <div class="user-banner" id="userGreeting">
+            👤 เข้าใช้งานด้วย: KKU Mail Verified
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'sports')">⚽ กีฬา/กิจกรรม</button>
+            <button class="tab-btn" onclick="switchTab(event, 'study')">📚 ติว/เรียน</button>
+            <button class="tab-btn" onclick="switchTab(event, 'lost')">🔍 ของหาย</button>
+        </div>
+
+        <!-- ⚽ หมวดกีฬา/กิจกรรม -->
+        <div id="sports" class="content-section active">
+            <!-- ฟอร์มสร้างโพสต์ -->
+            <div class="create-card">
+                <h3>➕ สร้างแมตช์/หากิจกรรม</h3>
+                <input type="text" id="sportTitle" placeholder="หัวข้อ (เช่น เตะบอลสนามหญ้าเทียม)">
+                <input type="datetime-local" id="sportTime">
+                <input type="number" id="sportSlots" placeholder="จำนวนคนที่ขาด (เช่น 3)">
+                <button class="btn-primary" onclick="addSportEvent()">ลงประกาศหาเพื่อน</button>
             </div>
-            <div class="event-card">
-                <div class="event-title">ตีแบดมินตันอาคารพลศึกษา</div>
-                <div class="event-meta">📍 ตึกพลศึกษา | 🕒 พรุ่งนี้ 17:00 น.</div>
-                <span class="event-status status-open">ขาดอีก 1 คน</span>
-                <button class="btn-join" onclick="joinEvent(this, 1)">กดเข้าร่วม (Join)</button>
+
+            <!-- รายการโพสต์ -->
+            <div id="sportsList">
+                <div class="event-card">
+                    <div class="event-title">เตะบอลฟุตซอลสนามกลาง มข.</div>
+                    <div class="event-meta">📍 สนามกลาง | 🕒 ค่ำนี้ 18:30 น.</div>
+                    <span class="event-status status-open">ขาดอีก 2 คน</span>
+                    <button class="btn-join" onclick="joinEvent(this, 2)">กดเข้าร่วม (Join)</button>
+                </div>
+                <div class="event-card">
+                    <div class="event-title">ตีแบดมินตันอาคารพลศึกษา</div>
+                    <div class="event-meta">📍 ตึกพลศึกษา | 🕒 พรุ่งนี้ 17:00 น.</div>
+                    <span class="event-status status-open">ขาดอีก 1 คน</span>
+                    <button class="btn-join" onclick="joinEvent(this, 1)">กดเข้าร่วม (Join)</button>
+                </div>
             </div>
+        </div>
+
+        <!-- 📚 หมวดติว/เรียน -->
+        <div id="study" class="content-section">
+            <div class="create-card">
+                <h3>➕ หาเพื่อนติวหนังสือ</h3>
+                <input type="text" id="studyTitle" placeholder="วิชาที่จะติว (เช่น ฟิสิกส์ 1)">
+                <input type="text" id="studyLoc" placeholder="สถานที่ (เช่น ห้องสมุด กังสดาล)">
+                <button class="btn-primary" onclick="addStudyEvent()">สร้างกลุ่มติว</button>
+            </div>
+            <div id="studyList">
+                <div class="event-card">
+                    <div class="event-title">ติวแคลคูลัสเตรียมสอบ Midterm</div>
+                    <div class="event-meta">📍 สำนักหอสมุด ชั้น 2 | 🕒 เสาร์นี้ 13:00 น.</div>
+                    <span class="event-status status-open">ขาดอีก 4 คน</span>
+                    <button class="btn-join" onclick="joinEvent(this, 4)">กดเข้าร่วม (Join)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔍 หมวดของหาย -->
+        <div id="lost" class="content-section">
+            <div class="create-card">
+                <h3>➕ แจ้งของหาย / เจอของ</h3>
+                <input type="text" id="lostTitle" placeholder="ของที่หาย/เจอ (เช่น ร่มสีฟ้า)">
+                <input type="text" id="lostLoc" placeholder="สถานที่ปักหมุด (เช่น ตึก EN04)">
+                <button class="btn-primary" onclick="addLostItem()">แจ้งเรื่อง</button>
+            </div>
+            <div id="lostList">
+                <div class="event-card">
+                    <div class="event-title">ลืมกระเป๋าดินสอสีส้ม</div>
+                    <div class="event-meta">📍 โรงอาหารกังสดาล | 🕒 2 ชั่วโมงที่แล้ว</div>
+                    <span class="event-status status-open" style="background:#fff3e0; color:#e65100;">🔍 กำลังตามหา</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item">🏠 หน้าแรก</a>
+            <a href="#" class="nav-item">💬 แชตกิจกรรม</a>
+            <a href="#" class="nav-item">👤 โปรไฟล์</a>
         </div>
     </div>
 
-    <!-- 📚 หมวดติว/เรียน -->
-    <div id="study" class="content-section">
-        <div class="create-card">
-            <h3>➕ หาเพื่อนติวหนังสือ</h3>
-            <input type="text" id="studyTitle" placeholder="วิชาที่จะติว (เช่น ฟิสิกส์ 1)">
-            <input type="text" id="studyLoc" placeholder="สถานที่ (เช่น ห้องสมุด กังสดาล)">
-            <button class="btn-primary" onclick="addStudyEvent()">สร้างกลุ่มติว</button>
-        </div>
-        <div id="studyList">
-            <div class="event-card">
-                <div class="event-title">ติวแคลคูลัสเตรียมสอบ Midterm</div>
-                <div class="event-meta">📍 สำนักหอสมุด ชั้น 2 | 🕒 เสาร์นี้ 13:00 น.</div>
-                <span class="event-status status-open">ขาดอีก 4 คน</span>
-                <button class="btn-join" onclick="joinEvent(this, 4)">กดเข้าร่วม (Join)</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 🔍 หมวดของหาย -->
-    <div id="lost" class="content-section">
-        <div class="create-card">
-            <h3>➕ แจ้งของหาย / เจอของ</h3>
-            <input type="text" id="lostTitle" placeholder="ของที่หาย/เจอ (เช่น ร่มสีฟ้า)">
-            <input type="text" id="lostLoc" placeholder="สถานที่ปักหมุด (เช่น ตึก EN04)">
-            <button class="btn-primary" onclick="addLostItem()">แจ้งเรื่อง</button>
-        </div>
-        <div id="lostList">
-            <div class="event-card">
-                <div class="event-title">ลืมกระเป๋าดินสอสีส้ม</div>
-                <div class="event-meta">📍 โรงอาหารกังสดาล | 🕒 2 ชั่วโมงที่แล้ว</div>
-                <span class="event-status status-open" style="background:#fff3e0; color:#e65100;">🔍 กำลังตามหา</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <a href="#" class="nav-item">🏠 หน้าแรก</a>
-        <a href="#" class="nav-item">💬 แชตกิจกรรม</a>
-        <a href="#" class="nav-item">👤 โปรไฟล์</a>
-    </div>
 </div>
 
 <script>
-    // สลับ Tab
-    function switchTab(tabId) {
+    // ----- ระบบ Authentication & ล็อกอิน -----
+    function handleLogin(e) {
+        e.preventDefault();
+        let email = document.getElementById('userInput').value;
+
+        if (email.endsWith('@kkumail.com') || email.endsWith('@kku.ac.th')) {
+            showApp(email);
+        } else {
+            alert('❌ กรุณาใช้อีเมลมหาวิทยาลัยขอนแก่น (@kkumail.com หรือ @kku.ac.th) เท่านั้น');
+        }
+    }
+
+    function handleSSOLogin() {
+        let email = prompt("กรุณากรอก KKU Mail ของคุณเพื่อเข้าสู่ระบบ:", "student@kkumail.com");
+        if (email) {
+            if (email.endsWith('@kkumail.com') || email.endsWith('@kku.ac.th')) {
+                showApp(email);
+            } else {
+                alert('❌ เข้าสู่ระบบไม่สำเร็จ: ต้องใช้อีเมล มข. เท่านั้น');
+            }
+        }
+    }
+
+    function showApp(email) {
+        document.getElementById('login-page').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        document.getElementById('userGreeting').textContent = `👤 เข้าใช้งานด้วย: ${email}`;
+    }
+
+    function handleLogout() {
+        document.getElementById('main-app').style.display = 'none';
+        document.getElementById('login-page').style.display = 'block';
+        document.getElementById('userInput').value = '';
+        document.getElementById('passInput').value = '';
+    }
+
+    // ----- ระบบแอปหลัก -----
+    function switchTab(evt, tabId) {
         document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         
         document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        evt.currentTarget.classList.add('active');
     }
 
-    // ฟังก์ชัน Join กิจกรรม
     function joinEvent(btn, currentSlots) {
         let newSlots = currentSlots - 1;
         let statusTag = btn.previousElementSibling;
@@ -306,7 +506,6 @@
         }
     }
 
-    // ฟังก์ชันเพิ่มกิจกรรมกีฬา
     function addSportEvent() {
         let title = document.getElementById('sportTitle').value;
         let slots = document.getElementById('sportSlots').value;
@@ -326,12 +525,11 @@
             <button class="btn-join" onclick="joinEvent(this, ${slots})">กดเข้าร่วม (Join)</button>
         `;
 
-        list.prepend(newCard); // เพิ่มไว้บนสุด
+        list.prepend(newCard);
         document.getElementById('sportTitle').value = '';
         document.getElementById('sportSlots').value = '';
     }
 
-    // ฟังก์ชันเพิ่มกิจกรรมติว
     function addStudyEvent() {
         let title = document.getElementById('studyTitle').value;
         let loc = document.getElementById('studyLoc').value;
@@ -356,7 +554,6 @@
         document.getElementById('studyLoc').value = '';
     }
 
-    // ฟังก์ชันแจ้งของหาย
     function addLostItem() {
         let title = document.getElementById('lostTitle').value;
         let loc = document.getElementById('lostLoc').value;
@@ -382,4 +579,4 @@
 </script>
 
 </body>
-</html>
+</html>       
